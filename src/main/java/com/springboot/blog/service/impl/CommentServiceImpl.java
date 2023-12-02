@@ -23,29 +23,34 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto createComment(long postId, CommentDto commentDto) {
-        Comment comment = mapToEbtity(commentDto);
+        Comment comment = mapToEntity(commentDto);
         Post post = postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("post","id", postId));
       comment.setPost(post);
     Comment comment1= commentRepository.save(comment);
-    return mapToDto(comment1);
+    return mapToDTO(comment1);
     }
 
-
-    private  CommentDto mapToDto(Comment comment){
-        CommentDto dto = new CommentDto();
-        dto.setId(comment.getId());
-        dto.setName(comment.getName());
-        dto.setEmail(comment.getEmail());
-        dto.setBody(comment.getBody());
-        return dto;
+    @Override
+    public CommentDto getAllComment() {
+        return null;
     }
 
-    private Comment mapToEbtity(CommentDto commentDto){
+    private CommentDto mapToDTO(Comment comment){
+        CommentDto commentDto = new CommentDto();
+        commentDto.setId(comment.getId());
+        commentDto.setName(comment.getName());
+        commentDto.setEmail(comment.getEmail());
+        commentDto.setBody(comment.getBody());
+        return  commentDto;
+    }
+
+    private Comment mapToEntity(CommentDto commentDto){
+
         Comment comment = new Comment();
         comment.setId(commentDto.getId());
         comment.setName(commentDto.getName());
-        comment.setEmail(comment.getEmail());
-        comment.setEmail(commentDto.getBody());
-        return comment;
+        comment.setEmail(commentDto.getEmail());
+        comment.setBody(commentDto.getBody());
+        return  comment;
     }
 }
